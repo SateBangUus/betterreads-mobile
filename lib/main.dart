@@ -1,4 +1,4 @@
-import 'package:betterreads/auth/screens/landing.dart';
+import 'package:betterreads/home/screens/homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
           title: 'BetterReads',
           theme: ThemeData.dark(),
-          home:  const LandingPage()),
+          home:  const HomePage()),
     );
   }
 }

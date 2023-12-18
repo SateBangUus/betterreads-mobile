@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:betterreads/home/screens/homepage.dart';
 import 'package:betterreads/auth/screens/login.dart';
 import 'package:betterreads/home/widgets/outlined_text.dart';
+import 'package:betterreads/user/screens/profile.dart';
 import 'package:provider/provider.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 
@@ -10,7 +11,7 @@ class LeftDrawer extends StatelessWidget {
 
   void navigateToPage(BuildContext context, Widget page) {
     Navigator.of(context)
-        .pushReplacement(MaterialPageRoute(builder: (context) => page));
+        .push(MaterialPageRoute(builder: (context) => page));
   }
 
   @override
@@ -27,27 +28,31 @@ class LeftDrawer extends StatelessWidget {
             child: Column(
               children: [
                 Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: RichText(
-                      text: const TextSpan(
-                          text: "Better",
-                          style: TextStyle(
-                              color: Colors.blue,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 30,
-                              shadows: [
-                                Shadow(offset: Offset(8, 8), blurRadius: 10, color: Color.fromARGB(85, 0, 0, 0))
-                              ],),
-                          children: [
-                            TextSpan(
-                                text: "Reads",
-                                style: TextStyle(
-                                    color: Colors.red,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 30))
-                          ]),
-                    ),
+                  padding: const EdgeInsets.all(8.0),
+                  child: RichText(
+                    text: const TextSpan(
+                        text: "Better",
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 30,
+                          shadows: [
+                            Shadow(
+                                offset: Offset(8, 8),
+                                blurRadius: 10,
+                                color: Color.fromARGB(85, 0, 0, 0))
+                          ],
+                        ),
+                        children: [
+                          TextSpan(
+                              text: "Reads",
+                              style: TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 30))
+                        ]),
                   ),
+                ),
                 const Padding(
                     padding: EdgeInsets.only(bottom: 8, left: 8, right: 8),
                     child: OutlinedText(
@@ -63,13 +68,11 @@ class LeftDrawer extends StatelessWidget {
             leading: const Icon(Icons.home),
             onTap: () => navigateToPage(context, const HomePage()),
           ),
-          
           ListTile(
             title: const Text('Search Books'),
             leading: const Icon(Icons.search),
             onTap: () => navigateToPage(context, const Placeholder()),
           ),
-          
           ListTile(
               title: const Text('Cart'),
               leading: const Icon(Icons.shopping_cart),
@@ -80,14 +83,14 @@ class LeftDrawer extends StatelessWidget {
                   navigateToPage(context, const Placeholder());
                 }
               }),
-              ListTile(
+          ListTile(
               title: const Text('Profile'),
               leading: const Icon(Icons.person),
               onTap: () {
                 if (!request.loggedIn) {
                   navigateToPage(context, const LoginPage());
                 } else {
-                  navigateToPage(context, const Placeholder());
+                  navigateToPage(context, const ProfilePage());
                 }
               }),
           request.loggedIn

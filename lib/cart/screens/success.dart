@@ -1,4 +1,4 @@
-import 'package:betterreads/screens/landing.dart';
+import 'package:betterreads/home/screens/homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -89,7 +89,7 @@ class CheckoutWidget extends StatelessWidget {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const LandingPage(),
+                          builder: (context) => const HomePage(),
                         ),
                       );
                     },
