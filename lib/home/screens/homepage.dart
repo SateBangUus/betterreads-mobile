@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:betterreads/widgets/drawer.dart';
+import 'package:betterreads/home/widgets/drawer.dart';
 import 'package:provider/provider.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 

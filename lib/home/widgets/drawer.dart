@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:betterreads/screens/homepage.dart';
-import 'package:betterreads/screens/login.dart';
-import 'package:betterreads/widgets/outlined_text.dart';
+import 'package:betterreads/home/screens/homepage.dart';
+import 'package:betterreads/auth/screens/login.dart';
+import 'package:betterreads/home/widgets/outlined_text.dart';
 import 'package:provider/provider.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 
