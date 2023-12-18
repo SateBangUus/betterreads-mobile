@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:betterreads/cart/models/buybook.dart';
-import 'package:betterreads/cart/screens/widgets/bookinfo.dart';
+import 'package:betterreads/cart/widgets/bookinfo.dart';
 
 class HomePageWidget extends StatefulWidget {
   final int id;

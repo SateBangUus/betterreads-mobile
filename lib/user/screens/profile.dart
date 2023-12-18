@@ -3,7 +3,7 @@ import 'package:betterreads/user/widgets/top_reviews_card.dart';
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
-import 'package:betterreads/models/user.dart';
+import 'package:betterreads/user/models/user.dart';
 
 class ProfileApp extends StatelessWidget {
   const ProfileApp({super.key});
