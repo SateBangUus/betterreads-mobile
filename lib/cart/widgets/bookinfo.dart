@@ -1,6 +1,6 @@
-import 'package:betterreads/cart/checkout.dart';
+import 'package:betterreads/cart/screens/checkout.dart';
 import 'package:flutter/material.dart';
-import 'package:betterreads/cart/buybook.dart';
+import 'package:betterreads/cart/screens/buybook.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'dart:convert';
