@@ -38,12 +38,12 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
     return Scaffold(
-      appBar: AppBar(),
-        body: Container(
+        appBar: AppBar(),
+        body: SizedBox(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
             child: Padding(
-              padding: EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -55,7 +55,7 @@ class _LoginPageState extends State<LoginPage> {
                           color: Colors.blue,
                           fontWeight: FontWeight.bold,
                           fontSize: MediaQuery.sizeOf(context).width / 7,
-                          shadows: [
+                          shadows: const [
                             Shadow(
                                 offset: Offset(8, 8),
                                 blurRadius: 10,
@@ -72,7 +72,7 @@ class _LoginPageState extends State<LoginPage> {
                                       MediaQuery.sizeOf(context).width / 7))
                         ]),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -109,7 +109,8 @@ class _LoginPageState extends State<LoginPage> {
                             String uname = response['username'];
                             Navigator.pushReplacement(
                               context,
-                              MaterialPageRoute(builder: (context) => HomePage()),
+                              MaterialPageRoute(
+                                  builder: (context) => const HomePage()),
                             );
                             ScaffoldMessenger.of(context)
                               ..hideCurrentSnackBar()

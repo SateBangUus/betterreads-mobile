@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
           title: 'BetterReads',
           theme: ThemeData.dark(),
-          home:  const HomePage()),
+          home: const HomePage()),
     );
   }
 }

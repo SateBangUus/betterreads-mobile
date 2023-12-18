@@ -14,10 +14,9 @@ class HomePageWidget extends StatefulWidget {
 }
 
 class _HomePageWidgetState extends State<HomePageWidget> {
-Future<List<Product>> getProduct() async {
-  
+  Future<List<Product>> getProduct() async {
     final int id = widget.id;
-    
+
     var url = Uri.parse(
         'https://betterreads-k3-tk.pbp.cs.ui.ac.id/buy/get-product-flutter/');
     var response = await http.get(
@@ -37,6 +36,7 @@ Future<List<Product>> getProduct() async {
 
     return listBuy;
   }
+
   void refreshC() {
     setState(() {
       getProduct();
@@ -48,7 +48,8 @@ Future<List<Product>> getProduct() async {
     return Scaffold(
         backgroundColor: const Color(0x18F1F4F8),
         appBar: AppBar(
-          backgroundColor: const Color(0xFF57636C), // Change to your desired color
+          backgroundColor:
+              const Color(0xFF57636C), // Change to your desired color
           automaticallyImplyLeading: false,
           title: const Row(
             mainAxisSize: MainAxisSize.max,
@@ -76,27 +77,27 @@ Future<List<Product>> getProduct() async {
           elevation: 2,
         ),
         body: FutureBuilder(
-          future: getProduct(),
-          builder: (context, AsyncSnapshot snapshot) {
-            if (snapshot.data == null) {
-              return const Center(child: CircularProgressIndicator());
-            } else {
-              if (!snapshot.hasData) {
-                return const Column(
-                  children: [
-                    Text(
-                      "You have no Product.",
-                      style: TextStyle(color: Color(0xFF236BF1), fontSize: 20),
-                    ),
-                    SizedBox(height: 8),
-                  ],
-                );
+            future: getProduct(),
+            builder: (context, AsyncSnapshot snapshot) {
+              if (snapshot.data == null) {
+                return const Center(child: CircularProgressIndicator());
               } else {
-                return Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
+                if (!snapshot.hasData) {
+                  return const Column(
+                    children: [
+                      Text(
+                        "You have no Product.",
+                        style:
+                            TextStyle(color: Color(0xFF236BF1), fontSize: 20),
+                      ),
+                      SizedBox(height: 8),
+                    ],
+                  );
+                } else {
+                  return Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: SingleChildScrollView(
+                          child: Column(children: [
                         // Replace the following with your actual search bar widget
                         const SizedBox(height: 30.0),
                         ListView.builder(
@@ -117,7 +118,8 @@ Future<List<Product>> getProduct() async {
                         const SizedBox(height: 50.0),
                         Card(
                           elevation: 3.0,
-                          margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                          margin: const EdgeInsets.symmetric(
+                              vertical: 8.0, horizontal: 16.0),
                           child: Container(
                             padding: const EdgeInsets.all(12.0),
                             child: Row(
@@ -128,19 +130,22 @@ Future<List<Product>> getProduct() async {
                                       Navigator.pushReplacement(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => CheckoutWidget(),
+                                          builder: (context) =>
+                                              CheckoutWidget(),
                                         ),
                                       );
                                       // Navigate back to the main page or perform other actions
                                     },
                                     style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.blue, // Change to your desired color
-                                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                                      backgroundColor: Colors
+                                          .blue, // Change to your desired color
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 24),
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(8),
                                       ),
                                     ),
-                                    child: Text(
+                                    child: const Text(
                                       'Buy',
                                       style: TextStyle(
                                         fontFamily: 'Readex Pro',
@@ -153,14 +158,9 @@ Future<List<Product>> getProduct() async {
                             ),
                           ),
                         ),
-                      ]
-                        )
-                  )
-                    );
-            }
-            }
-          }  
-                )
-    );
+                      ])));
+                }
+              }
+            }));
   }
 }
