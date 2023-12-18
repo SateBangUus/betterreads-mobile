@@ -1,92 +1,134 @@
+import 'package:betterreads/cart/checkout.dart';
 import 'package:flutter/material.dart';
 import 'package:betterreads/cart/buybook.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
+import 'dart:convert';
 
-class bookInfoCard extends StatefulWidget {
-  final Product bookInfo;
-  final int index;
-  final int lastIndex;
-  const bookInfoCard({
-    Key? key,
-    required this.bookInfo,
-    required this.index,
-    required this.lastIndex,
-  }) : super(key: key);
+class CheckoutCard extends StatefulWidget {
+  final int id;
+  final String title;
+  final String author;
+  final String imageURL;
+  final int amount;
+  final Function() refreshCheckout;
+
+  const CheckoutCard({
+    super.key,
+    required this.id,
+    required this.title,
+    required this.author,
+    required this.imageURL,
+    required this.amount,
+    required this.refreshCheckout,
+  });
 
   @override
-  State<bookInfoCard> createState() => _InfoBookCardState();
+  // ignore: library_private_types_in_public_api
+  _CheckoutCardState createState() => _CheckoutCardState();
 }
 
-class _InfoBookCardState extends State<bookInfoCard> {
-  bool dropDown = false;
+class _CheckoutCardState extends State<CheckoutCard> {
+  late int _amount;
+  late HomePageWidget checkoutPage;
+  TextEditingController _amountController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _amount = widget.amount;
+  }
+
+  void _increment() {
+    setState(() {
+      _amount++;
+    });
+    widget.refreshCheckout();
+  }
+
+  void _decrement() {
+    if (_amount > 1) {
+      setState(() {
+        _amount--;
+      });
+      widget.refreshCheckout();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(
-          color: widget.index % 2 == 0 ? Color(0xffc5d7f2) : Color(0xffcfe2ff)),
-      child: Padding(
-        padding: EdgeInsets.only(left: 16, right: 16, bottom: 20, top: 20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+    final request = context.watch<CookieRequest>();
+    return Card(
+      elevation: 3.0,
+      margin: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Container(
+        padding: const EdgeInsets.all(12.0),
+        child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image(image: NetworkImage(widget.bookInfo.imageLink),
-                  width: 200.0, // Adjust the width as needed
-                  height: 150.0,),
-            Text(
-              widget.bookInfo.title,
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w700,
+            Image.network(
+              widget.imageURL,
+              height: 120.0,
+              width: 90.0,
+              fit: BoxFit.cover,
+            ),
+            const SizedBox(width: 12.0),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.title,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Text('Author: ${widget.author}'),
+                  const SizedBox(height: 8.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.delete),
+                        onPressed: () async {
+                          await request.postJson(
+                              "https://betterreads-k3-tk.pbp.cs.ui.ac.id/buy/delete-book-flutter/",
+                              jsonEncode(<String, int>{
+                                'id': widget.id,
+                              }));
+
+                          widget.refreshCheckout();
+                        },
+                      ),
+                      const Spacer(), // Flexible space
+
+                      IconButton(
+                        icon: const Icon(Icons.remove_circle),
+                        onPressed: () async {
+                          await request.postJson(
+                              "https://betterreads-k3-tk.pbp.cs.ui.ac.id/buy/decrease-book-flutter/",
+                              jsonEncode(<String, int>{
+                                'id': widget.id,
+                              }));
+
+                          _decrement();
+                        },
+                      ),
+
+                      IconButton(
+                        icon: const Icon(Icons.add_circle),
+                        onPressed: () async {
+                          await request.postJson(
+                              "https://betterreads-k3-tk.pbp.cs.ui.ac.id/buy/increase-book-flutter/",
+                              jsonEncode(<String, int>{
+                                'id': widget.id,
+                              }));
+
+                          _increment();
+                        },
+                      ),
+                    ],
+                  ),
+                ],
               ),
-              maxLines: 2,
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-              widget.bookInfo.author,
-              style: TextStyle(
-                fontSize: 12,
-              ),
-              maxLines: 2,
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-              widget.bookInfo.description,
-              style: TextStyle(
-                fontSize: 12,
-              ),
-              maxLines: 1,
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Review",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
-                ),
-                IconButton(
-                  icon: dropDown
-                      ? Icon(Icons.arrow_drop_up)
-                      : Icon(Icons.arrow_drop_down),
-                  onPressed: () {
-                    setState(() {
-                      if (dropDown) {
-                        dropDown = false;
-                      } else {
-                        dropDown = true;
-                      }
-                    });
-                  },
-                ),
-              ],
             ),
           ],
         ),

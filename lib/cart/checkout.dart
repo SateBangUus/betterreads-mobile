@@ -1,56 +1,56 @@
+import 'package:betterreads/cart/success.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:betterreads/cart/buybook.dart';
-import 'package:betterreads/cart/tools/toolsbuy.dart';
 import 'package:betterreads/cart/widgets/bookinfo.dart';
 
 class HomePageWidget extends StatefulWidget {
-  const HomePageWidget({Key? key}) : super(key: key);
+  final int id;
+  const HomePageWidget({super.key, required this.id});
 
   @override
   _HomePageWidgetState createState() => _HomePageWidgetState();
 }
 
 class _HomePageWidgetState extends State<HomePageWidget> {
-  List<Product> finalbook = [];
-  late int countControllerValue1;
-  late int countControllerValue2;
+Future<List<Product>> getProduct() async {
+  
+    final int id = widget.id;
+    
+    var url = Uri.parse(
+        'https://betterreads-k3-tk.pbp.cs.ui.ac.id/buy/get-product-flutter/');
+    var response = await http.get(
+      url,
+      headers: {"Content-Type": "application/json"},
+    );
 
-  final scaffoldKey = GlobalKey<ScaffoldState>();
+    var data = jsonDecode(utf8.decode(response.bodyBytes));
 
-  @override
-  void initState() {
-    super.initState();
-    countControllerValue1 = 1;
-    countControllerValue2 = 1;
+    List<Product> listBuy = [];
+    for (var d in data) {
+      if (d != null && d['user'] == id) {
+        Product books = Product.fromJson(d);
+        listBuy.add(books);
+      }
+    }
+
+    return listBuy;
+  }
+  void refreshC() {
+    setState(() {
+      getProduct();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    if (Theme.of(context).platform == TargetPlatform.iOS) {
-      SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(
-          statusBarBrightness: Theme.of(context).brightness,
-          systemStatusBarContrastEnforced: true,
-        ),
-      );
-    }
-
-    return GestureDetector(
-      onTap: () {
-        if (FocusScope.of(context).hasPrimaryFocus) {
-          FocusScope.of(context).unfocus();
-        }
-      },
-      child: Scaffold(
-        key: scaffoldKey,
-        backgroundColor: Color(0x18F1F4F8),
+    return Scaffold(
+        backgroundColor: const Color(0x18F1F4F8),
         appBar: AppBar(
-          backgroundColor: Color(0xFF57636C), // Change to your desired color
+          backgroundColor: const Color(0xFF57636C), // Change to your desired color
           automaticallyImplyLeading: false,
-          title: Row(
+          title: const Row(
             mainAxisSize: MainAxisSize.max,
             children: [
               Text(
@@ -71,76 +71,96 @@ class _HomePageWidgetState extends State<HomePageWidget> {
               ),
             ],
           ),
-          actions: [],
+          actions: const [],
           centerTitle: false,
           elevation: 2,
         ),
-        body: SafeArea(
-          top: true,
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Expanded(
-                child: FutureBuilder<List<Product>>(
-                  future: getCart(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return ListView.builder(
-                        itemCount: snapshot.data!.length,
-                        shrinkWrap: true,
-                        itemBuilder: (BuildContext context, int index) {
-                          Product list = snapshot.data![index];
-                          return bookInfoCard(
-                            bookInfo: list,
-                            index: index,
-                            lastIndex: snapshot.data!.length,
-                          );
-                        },
-                      );
-                    } else {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                  },
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Column(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      print('Button pressed ...');
-                      // Navigate back to the main page or perform other actions.
-                    },
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.blue, // Change to your desired color
-                      padding: EdgeInsets.symmetric(horizontal: 24),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
+        body: FutureBuilder(
+          future: getProduct(),
+          builder: (context, AsyncSnapshot snapshot) {
+            if (snapshot.data == null) {
+              return const Center(child: CircularProgressIndicator());
+            } else {
+              if (!snapshot.hasData) {
+                return const Column(
+                  children: [
+                    Text(
+                      "You have no Product.",
+                      style: TextStyle(color: Color(0xFF236BF1), fontSize: 20),
                     ),
-                    child: Text(
-                      'Buy',
-                      style: TextStyle(
-                        fontFamily: 'Readex Pro',
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
+                    SizedBox(height: 8),
+                  ],
+                );
+              } else {
+                return Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        // Replace the following with your actual search bar widget
+                        const SizedBox(height: 30.0),
+                        ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (context, index) {
+                            var cartItem = snapshot.data![index];
+                            return CheckoutCard(
+                              id: cartItem.id,
+                              title: cartItem.bookTitle,
+                              author: cartItem.bookAuthor,
+                              imageURL: cartItem.bookImg,
+                              amount: cartItem.bookAmount,
+                              refreshCheckout: refreshC,
+                            );
+                          },
+                        ),
+                        const SizedBox(height: 50.0),
+                        Card(
+                          elevation: 3.0,
+                          margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                          child: Container(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => CheckoutWidget(),
+                                        ),
+                                      );
+                                      // Navigate back to the main page or perform other actions
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.blue, // Change to your desired color
+                                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                    ),
+                                    child: Text(
+                                      'Buy',
+                                      style: TextStyle(
+                                        fontFamily: 'Readex Pro',
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ]
+                        )
+                  )
+                    );
+            }
+            }
+          }  
+                )
     );
-  }
-
-  Future<List<Product>> getCart() async {
-    var jsonMap = await FetcherCart().getCart();
-    finalbook = jsonMap.map((item) => Product.fromJson(item)).toList();
-    return finalbook;
   }
 }
