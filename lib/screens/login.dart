@@ -1,3 +1,4 @@
+import 'package:betterreads/screens/homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
@@ -103,10 +104,10 @@ class _LoginPageState extends State<LoginPage> {
                           if (request.loggedIn) {
                             String message = response['message'];
                             String uname = response['username'];
-                            // Navigator.pushReplacement(
-                            //   context,
-                            //   MaterialPageRoute(builder: (context) => HomePage()),
-                            // );
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(builder: (context) => HomePage()),
+                            );
                             ScaffoldMessenger.of(context)
                               ..hideCurrentSnackBar()
                               ..showSnackBar(SnackBar(
