@@ -10,8 +10,7 @@ class LeftDrawer extends StatelessWidget {
   const LeftDrawer({super.key});
 
   void navigateToPage(BuildContext context, Widget page) {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => page));
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => page));
   }
 
   @override

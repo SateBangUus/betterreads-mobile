@@ -19,7 +19,7 @@ class TopReviewsCard extends StatelessWidget {
               : (index == 1)
                   ? Colors.white54
                   : (index == 2)
-                      ? Color.fromARGB(255, 120, 53, 15)
+                      ? const Color.fromARGB(255, 120, 53, 15)
                       : ThemeData.dark().cardColor,
           borderRadius: BorderRadius.circular(10)),
       child: Row(
@@ -41,7 +41,7 @@ class TopReviewsCard extends StatelessWidget {
                   )),
             ],
           )),
-          SizedBox(width: 10),
+          const SizedBox(width: 10),
           Text(userReview.rating.toString(),
               style: TextStyle(
                   fontSize: MediaQuery.sizeOf(context).width / 14,

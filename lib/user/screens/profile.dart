@@ -44,7 +44,6 @@ class _ProfilePageState extends State<ProfilePage> {
               future: fetchUser(request),
               builder: (context, AsyncSnapshot snapshot) {
                 if (snapshot.hasData) {
-                  print(snapshot.data.favGenres);
                   return Padding(
                     padding:
                         EdgeInsets.all(MediaQuery.sizeOf(context).width / 10),
@@ -61,7 +60,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     backgroundImage: NetworkImage(
                                         snapshot.data.profilePicture),
                                   ),
-                                  SizedBox(width: 20),
+                                  const SizedBox(width: 20),
                                   Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -78,7 +77,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                         10,
                                                 fontWeight: FontWeight.bold),
                                           ),
-                                          SizedBox(width: 5),
+                                          const SizedBox(width: 5),
                                           if (snapshot.data.isCurator)
                                             Icon(
                                               Icons.check,
@@ -102,7 +101,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                             ],
                           ),
-                          SizedBox(height: 20),
+                          const SizedBox(height: 20),
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -114,7 +113,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                           fontSize:
                                               MediaQuery.sizeOf(context).width /
                                                   20)),
-                                  SizedBox(height: 10),
+                                  const SizedBox(height: 10),
                                   Text(snapshot.data.totalReviews.toString(),
                                       style: TextStyle(
                                           fontSize:
@@ -123,7 +122,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                           fontWeight: FontWeight.bold))
                                 ],
                               ),
-                              SizedBox(width: 20),
+                              const SizedBox(width: 20),
                               Column(
                                 children: [
                                   Text("Average Rating",
@@ -131,7 +130,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                           fontSize:
                                               MediaQuery.sizeOf(context).width /
                                                   20)),
-                                  SizedBox(height: 10),
+                                  const SizedBox(height: 10),
                                   RichText(
                                     text: TextSpan(
                                       text: snapshot.data.averageRating
@@ -158,12 +157,12 @@ class _ProfilePageState extends State<ProfilePage> {
                               )
                             ],
                           ),
-                          SizedBox(height: 35),
+                          const SizedBox(height: 35),
                           Text("Top Reviews",
                               style: TextStyle(
                                   fontSize:
                                       MediaQuery.sizeOf(context).width / 18)),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           snapshot.data.favGenres!.isEmpty
                               ? Text("No reviews.",
                                   style: TextStyle(
@@ -171,24 +170,25 @@ class _ProfilePageState extends State<ProfilePage> {
                                           MediaQuery.sizeOf(context).width /
                                               22))
                               : ListView.builder(
-                                  physics: NeverScrollableScrollPhysics(),
+                                  physics: const NeverScrollableScrollPhysics(),
                                   itemCount: snapshot.data.topReviews!.length,
                                   shrinkWrap: true,
                                   itemBuilder: (context, index) {
                                     return Padding(
-                                      padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                                      padding:
+                                          const EdgeInsets.fromLTRB(0, 5, 0, 5),
                                       child: TopReviewsCard(
                                           userReview:
                                               snapshot.data.topReviews[index],
                                           index: index),
                                     );
                                   }),
-                          SizedBox(height: 35),
+                          const SizedBox(height: 35),
                           Text("Favorite Genre to Review",
                               style: TextStyle(
                                   fontSize:
                                       MediaQuery.sizeOf(context).width / 18)),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           snapshot.data.favGenres!.isEmpty
                               ? Text("No reviews.",
                                   style: TextStyle(
@@ -196,12 +196,13 @@ class _ProfilePageState extends State<ProfilePage> {
                                           MediaQuery.sizeOf(context).width /
                                               22))
                               : ListView.builder(
-                                  physics: NeverScrollableScrollPhysics(),
+                                  physics: const NeverScrollableScrollPhysics(),
                                   itemCount: snapshot.data.favGenres!.length,
                                   shrinkWrap: true,
                                   itemBuilder: (context, index) {
                                     return Padding(
-                                      padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                                      padding:
+                                          const EdgeInsets.fromLTRB(0, 5, 0, 5),
                                       child: FavoriteGenreCard(
                                           genre: snapshot.data.favGenres[index]
                                               ["book__genre"],

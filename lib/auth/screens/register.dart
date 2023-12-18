@@ -40,11 +40,11 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
     return Scaffold(
-        body: Container(
+        body: SizedBox(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
             child: Padding(
-              padding: EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -56,7 +56,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           color: Colors.blue,
                           fontWeight: FontWeight.bold,
                           fontSize: MediaQuery.sizeOf(context).width / 7,
-                          shadows: [
+                          shadows: const [
                             Shadow(
                                 offset: Offset(8, 8),
                                 blurRadius: 10,
@@ -73,7 +73,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                       MediaQuery.sizeOf(context).width / 7))
                         ]),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [

@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 class CheckoutWidget extends StatelessWidget {
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
+  CheckoutWidget({super.key});
+
   @override
   Widget build(BuildContext context) {
     if (Theme.of(context).platform == TargetPlatform.iOS) {
@@ -24,11 +26,11 @@ class CheckoutWidget extends StatelessWidget {
       },
       child: Scaffold(
         key: scaffoldKey,
-        backgroundColor: Color(0x18F1F4F8),
+        backgroundColor: const Color(0x18F1F4F8),
         appBar: AppBar(
-          backgroundColor: Color(0xFF57636C),
+          backgroundColor: const Color(0xFF57636C),
           automaticallyImplyLeading: false,
-          title: Row(
+          title: const Row(
             mainAxisSize: MainAxisSize.max,
             children: [
               Text(
@@ -56,13 +58,13 @@ class CheckoutWidget extends StatelessWidget {
         body: SafeArea(
           top: true,
           child: Align(
-            alignment: AlignmentDirectional(0.00, 0.00),
+            alignment: const AlignmentDirectional(0.00, 0.00),
             child: Container(
               width: 251,
               height: 84,
               decoration: BoxDecoration(
-                color: Color(0x54A28888),
-                boxShadow: [
+                color: const Color(0x54A28888),
+                boxShadow: const [
                   BoxShadow(
                     blurRadius: 4,
                     color: Color(0x33000000),
@@ -75,7 +77,7 @@ class CheckoutWidget extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  Text(
+                  const Text(
                     '\nYou Have Checked Out Successfully!\n',
                     style: TextStyle(
                       fontFamily: 'Readex Pro',
@@ -84,7 +86,6 @@ class CheckoutWidget extends StatelessWidget {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      print('Button pressed ...');
                       // Navigate back to the main page or perform other actions.
                       Navigator.pushReplacement(
                         context,
@@ -94,13 +95,13 @@ class CheckoutWidget extends StatelessWidget {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Theme.of(context).primaryColor,
-                      padding: EdgeInsets.symmetric(horizontal: 24),
+                      backgroundColor: Theme.of(context).primaryColor,
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    child: Text(
+                    child: const Text(
                       'Go Back to Main Page',
                       style: TextStyle(
                         fontFamily: 'Readex Pro',
