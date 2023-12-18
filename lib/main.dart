@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
           title: 'INVENTARIS',
           theme: ThemeData.dark(),
-          home: const LandingPage()),
+          home:  const LandingPage()),
     );
   }
 }
