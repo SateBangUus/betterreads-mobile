@@ -1,37 +1,40 @@
+import 'dart:convert';
+
+import 'package:betterreads/auth/screens/login.dart';
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
-import 'package:betterreads/screens/user/profile.dart';
 
 void main() {
-  runApp(const LoginApp());
+  runApp(const RegisterApp());
 }
 
-class LoginApp extends StatelessWidget {
-  const LoginApp({super.key});
+class RegisterApp extends StatelessWidget {
+  const RegisterApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Login',
+      title: 'Register',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const LoginPage(),
+      home: const RegisterPage(),
     );
   }
 }
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _RegisterPageState createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _password1Controller = TextEditingController();
+  final TextEditingController _password2Controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +69,8 @@ class _LoginPageState extends State<LoginPage> {
                               style: TextStyle(
                                   color: Colors.red,
                                   fontWeight: FontWeight.bold,
-                                  fontSize: MediaQuery.sizeOf(context).width / 7))
+                                  fontSize:
+                                      MediaQuery.sizeOf(context).width / 7))
                         ]),
                   ),
                   SizedBox(height: 20),
@@ -81,9 +85,17 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       const SizedBox(height: 12.0),
                       TextField(
-                        controller: _passwordController,
+                        controller: _password1Controller,
                         decoration: const InputDecoration(
                           labelText: 'Password',
+                        ),
+                        obscureText: true,
+                      ),
+                      const SizedBox(height: 12.0),
+                      TextField(
+                        controller: _password2Controller,
+                        decoration: const InputDecoration(
+                          labelText: 'Confirm Password',
                         ),
                         obscureText: true,
                       ),
@@ -91,62 +103,54 @@ class _LoginPageState extends State<LoginPage> {
                       ElevatedButton(
                         onPressed: () async {
                           String username = _usernameController.text;
-                          String password = _passwordController.text;
+                          String password1 = _password1Controller.text;
+                          String password2 = _password2Controller.text;
 
-                          // Check credentials
-                          final response = await request.login(
-                              "https://betterreads-k3-tk.pbp.cs.ui.ac.id/api/login/",
-                              {
+                          // Navigator.pop(context);
+                          final response = await request.postJson(
+                              "https://betterreads-k3-tk.pbp.cs.ui.ac.id/api/register/",
+                              jsonEncode(<String, String>{
                                 'username': username,
-                                'password': password,
-                              });
-
-                          if (request.loggedIn) {
+                                'password1': password1,
+                                'password2': password2,
+                              }));
+                          if (response['status'] == true) {
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => ProfilePage()),
+                                  builder: (context) => const LoginPage()),
                             );
                           } else {
-                            showDialog(
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                title: const Text('Login Failed'),
-                                content: Text(response['message']),
-                                actions: [
-                                  TextButton(
-                                    child: const Text('OK'),
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                  ),
-                                ],
-                              ),
-                            );
+                            ScaffoldMessenger.of(context)
+                              ..hideCurrentSnackBar()
+                              ..showSnackBar(
+                                SnackBar(
+                                  content: Text('Register failed.'),
+                                ),
+                              );
                           }
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.blue,
-                          minimumSize: const Size(90, 40),
                         ),
-                        child: Text(
-                          'Login',
-                          style: TextStyle(
-                            fontSize: MediaQuery.sizeOf(context).width / 18,
-                          ),
-                        ),
+                        child: FittedBox(
+                            fit: BoxFit.fitWidth,
+                            child: Text("Register",
+                                style: TextStyle(
+                                    fontSize: MediaQuery.sizeOf(context).width /
+                                        18))),
                       ),
                       const SizedBox(height: 24.0),
                       TextButton(
                         onPressed: () {
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //       builder: (context) => const RegisterPage()),
-                          // );
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const LoginPage()),
+                          );
                         },
                         child: const Text(
-                          'No account? Register here!',
+                          'Already have an account? Login here!',
                           style: TextStyle(
                             fontSize: 16,
                             color: Colors.grey,

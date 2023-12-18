@@ -1,4 +1,4 @@
-import 'package:betterreads/screens/landing.dart';
+import 'package:betterreads/auth/screens/landing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

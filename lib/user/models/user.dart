@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:betterreads/models/user_review.dart';
+import 'package:betterreads/user/models/user_review.dart';
 
 User userFromJson(String str) => User.fromJson(json.decode(str));
 
@@ -15,7 +15,7 @@ class User {
   bool isCurator;
   String joinDate;
   List<UserReview> topReviews;
-  num totalReviewsl;
+  num totalReviews;
   num averageRating;
   List<dynamic> favGenres;
 
@@ -28,7 +28,7 @@ class User {
     required this.isCurator,
     required this.joinDate,
     required this.topReviews,
-    required this.totalReviewsl,
+    required this.totalReviews,
     required this.averageRating,
     required this.favGenres,
   });
@@ -43,7 +43,7 @@ class User {
         joinDate: json["join_date"],
         topReviews: List<UserReview>.from(
             json["top_reviews"].map((x) => UserReview.fromJson(x))),
-        totalReviewsl: json["total_reviewsl"],
+        totalReviews: json["total_reviews"],
         averageRating: json["average_rating"],
         favGenres: List<dynamic>.from(json["fav_genres"].map((x) => x)),
       );
@@ -57,7 +57,7 @@ class User {
         "is_curator": isCurator,
         "join_date": joinDate,
         "top_reviews": List<UserReview>.from(topReviews.map((x) => x)),
-        "total_reviewsl": totalReviewsl,
+        "total_reviews": totalReviews,
         "average_rating": averageRating,
         "fav_genres": List<dynamic>.from(favGenres.map((x) => x)),
       };

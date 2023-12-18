@@ -3,7 +3,7 @@
 //     final userReview = userReviewFromJson(jsonString);
 
 import 'dart:convert';
-import 'package:betterreads/models/book.dart';
+import 'package:betterreads/book/models/book.dart';
 
 UserReview userReviewFromJson(String str) =>
     UserReview.fromJson(json.decode(str));

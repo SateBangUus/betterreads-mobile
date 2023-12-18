@@ -1,5 +1,4 @@
-import 'package:betterreads/screens/landing.dart';
-import 'package:betterreads/screens/user/profile.dart';
+import 'package:betterreads/auth/screens/landing.dart';
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
