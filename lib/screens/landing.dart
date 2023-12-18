@@ -52,7 +52,7 @@ class _LandingPageState extends State<LandingPage> {
                         style: TextStyle(
                             color: Colors.blue,
                             fontWeight: FontWeight.bold,
-                            fontSize: 64,
+                            fontSize: MediaQuery.sizeOf(context).width / 7,
                             shadows: [
                               Shadow(offset: Offset(8, 8), blurRadius: 10, color: Color.fromARGB(85, 0, 0, 0))
                             ],),
@@ -62,7 +62,7 @@ class _LandingPageState extends State<LandingPage> {
                               style: TextStyle(
                                   color: Colors.red,
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 64))
+                                  fontSize: MediaQuery.sizeOf(context).width / 7))
                         ]),
                   ),
                   SizedBox(height: 20),
@@ -77,16 +77,16 @@ class _LandingPageState extends State<LandingPage> {
                             )
                           },
                           child:
-                              Text("Login", style: TextStyle(fontSize: 18)),
+                              Text("Login", style: TextStyle(fontSize: MediaQuery.sizeOf(context).width / 18)),
                           style: ElevatedButton.styleFrom(
-                              minimumSize: Size(100, 45))),
+                              minimumSize: Size(90, 40))),
                       SizedBox(width: 20),
                       ElevatedButton(
                           onPressed: () => {},
                           child:
-                              Text("Register", style: TextStyle(fontSize: 18)),
+                              Text("Register", style: TextStyle(fontSize: MediaQuery.sizeOf(context).width / 18)),
                           style: ElevatedButton.styleFrom(
-                              minimumSize: Size(100, 45), backgroundColor: Colors.red))
+                              minimumSize: Size(90, 40), backgroundColor: Colors.red))
                     ],
                   )
                 ],

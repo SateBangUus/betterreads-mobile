@@ -52,7 +52,7 @@ class _LoginPageState extends State<LoginPage> {
                         style: TextStyle(
                           color: Colors.blue,
                           fontWeight: FontWeight.bold,
-                          fontSize: 64,
+                          fontSize: MediaQuery.sizeOf(context).width / 7,
                           shadows: [
                             Shadow(
                                 offset: Offset(8, 8),
@@ -66,7 +66,7 @@ class _LoginPageState extends State<LoginPage> {
                               style: TextStyle(
                                   color: Colors.red,
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 64))
+                                  fontSize: MediaQuery.sizeOf(context).width / 7))
                         ]),
                   ),
                   SizedBox(height: 20),
@@ -127,12 +127,12 @@ class _LoginPageState extends State<LoginPage> {
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.blue,
-                          minimumSize: const Size(100, 45),
+                          minimumSize: const Size(90, 40),
                         ),
-                        child: const Text(
+                        child: Text(
                           'Login',
                           style: TextStyle(
-                            fontSize: 18,
+                            fontSize: MediaQuery.sizeOf(context).width / 18,
                           ),
                         ),
                       ),
