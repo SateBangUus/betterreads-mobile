@@ -1,7 +1,6 @@
 import 'package:betterreads/auth/screens/login.dart';
+import 'package:betterreads/auth/screens/register.dart';
 import 'package:flutter/material.dart';
-import 'package:pbp_django_auth/pbp_django_auth.dart';
-import 'package:provider/provider.dart';
 
 void main() {
   runApp(const LandingApp());
@@ -30,12 +29,8 @@ class LandingPage extends StatefulWidget {
 }
 
 class _LandingPageState extends State<LandingPage> {
-  final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
-    final request = context.watch<CookieRequest>();
     return Scaffold(
         body: Container(
             width: MediaQuery.of(context).size.width,
@@ -50,19 +45,24 @@ class _LandingPageState extends State<LandingPage> {
                     text: TextSpan(
                         text: "Better",
                         style: TextStyle(
-                            color: Colors.blue,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 64,
-                            shadows: [
-                              Shadow(offset: Offset(8, 8), blurRadius: 10, color: Color.fromARGB(85, 0, 0, 0))
-                            ],),
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold,
+                          fontSize: MediaQuery.sizeOf(context).width / 7,
+                          shadows: [
+                            Shadow(
+                                offset: Offset(8, 8),
+                                blurRadius: 10,
+                                color: Color.fromARGB(85, 0, 0, 0))
+                          ],
+                        ),
                         children: [
                           TextSpan(
                               text: "Reads",
                               style: TextStyle(
                                   color: Colors.red,
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 64))
+                                  fontSize:
+                                      MediaQuery.sizeOf(context).width / 7))
                         ]),
                   ),
                   SizedBox(height: 20),
@@ -71,22 +71,35 @@ class _LandingPageState extends State<LandingPage> {
                     children: [
                       ElevatedButton(
                           onPressed: () => {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => LoginPage())
-                            )
-                          },
-                          child:
-                              Text("Login", style: TextStyle(fontSize: 18)),
-                          style: ElevatedButton.styleFrom(
-                              minimumSize: Size(100, 45))),
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => LoginPage()))
+                              },
+                          child: FittedBox(
+                              fit: BoxFit.fitWidth,
+                              child: Text("Login",
+                                  style: TextStyle(
+                                      fontSize:
+                                          MediaQuery.sizeOf(context).width /
+                                              18)))),
                       SizedBox(width: 20),
                       ElevatedButton(
-                          onPressed: () => {},
-                          child:
-                              Text("Register", style: TextStyle(fontSize: 18)),
+                          onPressed: () => {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => RegisterPage()))
+                              },
+                          child: FittedBox(
+                              fit: BoxFit.fitWidth,
+                              child: Text("Register",
+                                  style: TextStyle(
+                                      fontSize:
+                                          MediaQuery.sizeOf(context).width /
+                                              18))),
                           style: ElevatedButton.styleFrom(
-                              minimumSize: Size(100, 45), backgroundColor: Colors.red))
+                              backgroundColor: Colors.red)),
                     ],
                   )
                 ],

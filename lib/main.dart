@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
         return request;
       },
       child: MaterialApp(
-          title: 'INVENTARIS',
+          title: 'BetterReads',
           theme: ThemeData.dark(),
           home:  const LandingPage()),
     );
