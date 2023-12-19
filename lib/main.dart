@@ -1,14 +1,15 @@
+import 'package:betterreads/book/screens/desc.dart';
 import 'package:betterreads/home/screens/homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
@@ -21,7 +22,8 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
           title: 'BetterReads',
           theme: ThemeData.dark(),
-          home: const HomePage()),
+          home: const BookDetailPage(bookId: 1), // Replace 1 with an actual book ID
+      ),
     );
   }
 }
