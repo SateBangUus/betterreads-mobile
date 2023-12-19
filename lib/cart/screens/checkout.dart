@@ -1,55 +1,50 @@
 import 'package:betterreads/cart/screens/success.dart';
+import 'package:betterreads/home/widgets/drawer.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:betterreads/cart/models/buybook.dart';
 import 'package:betterreads/cart/widgets/bookinfo.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
 
-class HomePageWidget extends StatefulWidget {
-  final int id;
-  const HomePageWidget({super.key, required this.id});
+class CartWidget extends StatefulWidget {
+  const CartWidget({super.key});
 
   @override
-  _HomePageWidgetState createState() => _HomePageWidgetState();
+  _CartWidgetState createState() => _CartWidgetState();
 }
 
-class _HomePageWidgetState extends State<HomePageWidget> {
-  Future<List<Product>> getProduct() async {
-    final int id = widget.id;
+class _CartWidgetState extends State<CartWidget> {
+Future<List<Product>> getProduct(CookieRequest request) async {
+    var response = await request.get(
+  'https://betterreads-k3-tk.pbp.cs.ui.ac.id/buy/get-product-flutter/',
+);
+      var data = jsonDecode(response.body);
 
-    var url = Uri.parse(
-        'https://betterreads-k3-tk.pbp.cs.ui.ac.id/buy/get-product-flutter/');
-    var response = await http.get(
-      url,
-      headers: {"Content-Type": "application/json"},
-    );
-
-    var data = jsonDecode(utf8.decode(response.bodyBytes));
-
-    List<Product> listBuy = [];
-    for (var d in data) {
-      if (d != null && d['user'] == id) {
-        Product books = Product.fromJson(d);
-        listBuy.add(books);
+      List<Product> listBuy = [];
+      for (var d in data) {
+        if (d != null) {
+          Product product = Product.fromJson(d);
+          listBuy.add(product);
+        }
       }
-    }
 
-    return listBuy;
-  }
+      return listBuy;
+}
 
   void refreshC() {
+    final request = context.watch<CookieRequest>();
     setState(() {
-      getProduct();
+      getProduct(request);
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
     return Scaffold(
-        backgroundColor: const Color(0x18F1F4F8),
         appBar: AppBar(
-          backgroundColor:
-              const Color(0xFF57636C), // Change to your desired color
+              backgroundColor: const Color.fromARGB(255, 64, 64, 64),// Change to your desired color
           automaticallyImplyLeading: false,
           title: const Row(
             mainAxisSize: MainAxisSize.max,
@@ -76,24 +71,34 @@ class _HomePageWidgetState extends State<HomePageWidget> {
           centerTitle: false,
           elevation: 2,
         ),
+        drawer: const LeftDrawer(),
         body: FutureBuilder(
-            future: getProduct(),
+            future: getProduct(request),
             builder: (context, AsyncSnapshot snapshot) {
-              if (snapshot.data == null) {
-                return const Center(child: CircularProgressIndicator());
-              } else {
-                if (!snapshot.hasData) {
-                  return const Column(
-                    children: [
-                      Text(
-                        "You have no Product.",
-                        style:
-                            TextStyle(color: Color(0xFF236BF1), fontSize: 20),
-                      ),
-                      SizedBox(height: 8),
-                    ],
-                  );
-                } else {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+      return const Center(child: CircularProgressIndicator());
+    } else if (snapshot.hasError) {
+      return Center(child: Text('Error: ${snapshot.error}'));
+    } else if (!snapshot.hasData || snapshot.data == null) {
+      return const Center(
+        child: Text('No items in the cart!'),
+      );
+    } else {
+                 if (!snapshot.hasData) {
+                    return const Center(child:Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 16, bottom: 8, left: 6, right: 6),
+                  child: Text(
+                    'You have no items in the cart!',
+                    style: TextStyle(fontSize: 40),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ]
+                    ));
+                  } else {
                   return Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: SingleChildScrollView(
@@ -105,13 +110,14 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           itemCount: snapshot.data!.length,
                           itemBuilder: (context, index) {
                             var cartItem = snapshot.data![index];
+                            print("Cart Item $index: $cartItem");
                             return CheckoutCard(
-                              id: cartItem.id,
-                              title: cartItem.bookTitle,
-                              author: cartItem.bookAuthor,
-                              imageURL: cartItem.bookImg,
-                              amount: cartItem.bookAmount,
-                              refreshCheckout: refreshC,
+                            id: cartItem.id, // Assuming pk is the identifier for the book
+                            title: cartItem.title,
+                            author: cartItem.author,
+                            imageURL: cartItem.imageLink,
+                            amount: cartItem.amount, // Replace with the actual property
+                            refreshCheckout: refreshC,
                             );
                           },
                         ),
@@ -161,6 +167,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                       ])));
                 }
               }
-            }));
+            }
+            ));
   }
 }
