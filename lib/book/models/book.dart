@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final book = bookFromJson(jsonString);
-
 import 'dart:convert';
 
 Book bookFromJson(String str) => Book.fromJson(json.decode(str));
@@ -9,30 +5,6 @@ Book bookFromJson(String str) => Book.fromJson(json.decode(str));
 String bookToJson(Book data) => json.encode(data.toJson());
 
 class Book {
-  String model;
-  int pk;
-  Fields fields;
-
-  Book({
-    required this.model,
-    required this.pk,
-    required this.fields,
-  });
-
-  factory Book.fromJson(Map<String, dynamic> json) => Book(
-        model: json["model"],
-        pk: json["pk"],
-        fields: Fields.fromJson(json["fields"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "model": model,
-        "pk": pk,
-        "fields": fields.toJson(),
-      };
-}
-
-class Fields {
   String title;
   String author;
   String publisher;
@@ -41,7 +13,7 @@ class Fields {
   String genre;
   String imageLink;
 
-  Fields({
+  Book({
     required this.title,
     required this.author,
     required this.publisher,
@@ -51,7 +23,7 @@ class Fields {
     required this.imageLink,
   });
 
-  factory Fields.fromJson(Map<String, dynamic> json) => Fields(
+  factory Book.fromJson(Map<String, dynamic> json) => Book(
         title: json["title"],
         author: json["author"],
         publisher: json["publisher"],
