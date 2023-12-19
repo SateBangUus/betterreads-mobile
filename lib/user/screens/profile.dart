@@ -1,25 +1,11 @@
+import 'package:betterreads/home/widgets/drawer.dart';
+import 'package:betterreads/user/screens/edit_profile.dart';
 import 'package:betterreads/user/widgets/favorite_genre_card.dart';
 import 'package:betterreads/user/widgets/top_reviews_card.dart';
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:betterreads/user/models/user.dart';
-
-class ProfileApp extends StatelessWidget {
-  final String username;
-  const ProfileApp({super.key, required this.username});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Profile',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: ProfilePage(username: username),
-    );
-  }
-}
 
 class ProfilePage extends StatelessWidget {
   final String username;
@@ -36,6 +22,11 @@ class ProfilePage extends StatelessWidget {
     final request = context.watch<CookieRequest>();
     return Scaffold(
         appBar: AppBar(title: const Text('Profile')),
+        drawer: request.loggedIn
+            ? (username == request.getJsonData()['username']
+                ? const LeftDrawer()
+                : null)
+            : null,
         body: SingleChildScrollView(
           child: FutureBuilder(
               future: fetchUser(request),
@@ -75,7 +66,7 @@ class ProfilePage extends StatelessWidget {
                                                 fontSize:
                                                     MediaQuery.sizeOf(context)
                                                             .width /
-                                                        10,
+                                                        12,
                                                 fontWeight: FontWeight.bold),
                                           ),
                                           const SizedBox(width: 5),
@@ -97,7 +88,13 @@ class ProfilePage extends StatelessWidget {
                                                 24),
                                       ),
                                       ElevatedButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const EditProfilePage()));
+                                        },
                                         child: Text('Edit Profile',
                                             style: TextStyle(
                                                 fontSize:
@@ -226,7 +223,12 @@ class ProfilePage extends StatelessWidget {
                 } else if (snapshot.hasError) {
                   return Text('${snapshot.error}');
                 }
-                return const CircularProgressIndicator();
+                return SizedBox(
+                    height: MediaQuery.sizeOf(context).height,
+                    width: MediaQuery.sizeOf(context).width,
+                    child: const Center(
+                      child: CircularProgressIndicator(),
+                    ));
               }),
         ));
   }

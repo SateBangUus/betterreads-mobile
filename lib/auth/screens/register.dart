@@ -5,25 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 
-void main() {
-  runApp(const RegisterApp());
-}
-
-class RegisterApp extends StatelessWidget {
-  const RegisterApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Register',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const RegisterPage(),
-    );
-  }
-}
-
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
 
