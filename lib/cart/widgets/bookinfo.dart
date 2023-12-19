@@ -29,7 +29,7 @@ class CheckoutCard extends StatefulWidget {
 
 class _CheckoutCardState extends State<CheckoutCard> {
   late int _amount;
-  late HomePageWidget checkoutPage;
+  late CartWidget checkoutPage;
 
   @override
   void initState() {

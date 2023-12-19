@@ -6,14 +6,14 @@ import 'dart:convert';
 import 'package:betterreads/book/models/book.dart';
 import 'package:betterreads/cart/widgets/bookinfo.dart';
 
-class HomePageWidget extends StatefulWidget {
-  const HomePageWidget({super.key});
+class CartWidget extends StatefulWidget {
+  const CartWidget({super.key});
 
   @override
-  _HomePageWidgetState createState() => _HomePageWidgetState();
+  _CartWidgetState createState() => _CartWidgetState();
 }
 
-class _HomePageWidgetState extends State<HomePageWidget> {
+class _CartWidgetState extends State<CartWidget> {
   Future<List<Book>> getProduct() async {
 
     var url = Uri.parse(
