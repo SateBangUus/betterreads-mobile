@@ -80,7 +80,7 @@ class LeftDrawer extends StatelessWidget {
                 if (!request.loggedIn) {
                   navigateToPage(context, const LoginPage());
                 } else {
-                  navigateToPage(context, const HomePageWidget());
+                  navigateToPage(context, const CartWidget());
                 }
               }),
           ListTile(
