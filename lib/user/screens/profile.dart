@@ -6,7 +6,8 @@ import 'package:provider/provider.dart';
 import 'package:betterreads/user/models/user.dart';
 
 class ProfileApp extends StatelessWidget {
-  const ProfileApp({super.key});
+  final String username;
+  const ProfileApp({super.key, required this.username});
 
   @override
   Widget build(BuildContext context) {
@@ -15,22 +16,18 @@ class ProfileApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const ProfilePage(),
+      home: ProfilePage(username: username),
     );
   }
 }
 
-class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+class ProfilePage extends StatelessWidget {
+  final String username;
+  const ProfilePage({super.key, required this.username});
 
-  @override
-  _ProfilePageState createState() => _ProfilePageState();
-}
-
-class _ProfilePageState extends State<ProfilePage> {
   Future<User> fetchUser(CookieRequest request) async {
     final response = await request
-        .get('https://betterreads-k3-tk.pbp.cs.ui.ac.id/api/user/');
+        .get('https://betterreads-k3-tk.pbp.cs.ui.ac.id/api/user/$username/');
     return User.fromJson(response);
   }
 
@@ -67,6 +64,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
                                         children: [
                                           Text(
                                             snapshot.data.username,
@@ -95,13 +96,22 @@ class _ProfilePageState extends State<ProfilePage> {
                                                     .width /
                                                 24),
                                       ),
+                                      ElevatedButton(
+                                        onPressed: () {},
+                                        child: Text('Edit Profile',
+                                            style: TextStyle(
+                                                fontSize:
+                                                    MediaQuery.sizeOf(context)
+                                                            .width /
+                                                        20)),
+                                      ),
                                     ],
                                   ),
                                 ],
                               ),
                             ],
                           ),
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 35),
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
