@@ -1,7 +1,6 @@
 import 'package:betterreads/cart/screens/success.dart';
 import 'package:betterreads/home/widgets/drawer.dart';
 import 'package:flutter/material.dart';
-import 'dart:convert';
 import 'package:betterreads/cart/models/buybook.dart';
 import 'package:betterreads/cart/widgets/bookinfo.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
@@ -90,7 +89,7 @@ class _CartWidgetState extends State<CartWidget> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                         Padding(
-                          padding: const EdgeInsets.only(
+                          padding: EdgeInsets.only(
                               top: 16, bottom: 8, left: 6, right: 6),
                           child: Text(
                             'You have no items in the cart!',
@@ -111,7 +110,6 @@ class _CartWidgetState extends State<CartWidget> {
                           itemCount: snapshot.data!.length,
                           itemBuilder: (context, index) {
                             var cartItem = snapshot.data![index];
-                            print("Cart Item $index: $cartItem");
                             return CheckoutCard(
                               id: cartItem
                                   .id, // Assuming pk is the identifier for the book
