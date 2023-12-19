@@ -1,21 +1,20 @@
 import 'package:betterreads/cart/screens/success.dart';
+import 'package:betterreads/home/widgets/drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:betterreads/cart/models/buybook.dart';
+import 'package:betterreads/book/models/book.dart';
 import 'package:betterreads/cart/widgets/bookinfo.dart';
 
 class HomePageWidget extends StatefulWidget {
-  final int id;
-  const HomePageWidget({super.key, required this.id});
+  const HomePageWidget({super.key});
 
   @override
   _HomePageWidgetState createState() => _HomePageWidgetState();
 }
 
 class _HomePageWidgetState extends State<HomePageWidget> {
-  Future<List<Product>> getProduct() async {
-    final int id = widget.id;
+  Future<List<Book>> getProduct() async {
 
     var url = Uri.parse(
         'https://betterreads-k3-tk.pbp.cs.ui.ac.id/buy/get-product-flutter/');
@@ -26,10 +25,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
 
     var data = jsonDecode(utf8.decode(response.bodyBytes));
 
-    List<Product> listBuy = [];
+    List<Book> listBuy = [];
     for (var d in data) {
-      if (d != null && d['user'] == id) {
-        Product books = Product.fromJson(d);
+      if (d != null) {
+        Book books = Book.fromJson(d);
         listBuy.add(books);
       }
     }
@@ -46,10 +45,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color(0x18F1F4F8),
         appBar: AppBar(
-          backgroundColor:
-              const Color(0xFF57636C), // Change to your desired color
+              backgroundColor: const Color.fromARGB(255, 64, 64, 64),// Change to your desired color
           automaticallyImplyLeading: false,
           title: const Row(
             mainAxisSize: MainAxisSize.max,
@@ -76,23 +73,27 @@ class _HomePageWidgetState extends State<HomePageWidget> {
           centerTitle: false,
           elevation: 2,
         ),
+        drawer: const LeftDrawer(),
         body: FutureBuilder(
             future: getProduct(),
             builder: (context, AsyncSnapshot snapshot) {
               if (snapshot.data == null) {
                 return const Center(child: CircularProgressIndicator());
-              } else {
+             } else {
                 if (!snapshot.hasData) {
-                  return const Column(
-                    children: [
-                      Text(
-                        "You have no Product.",
-                        style:
-                            TextStyle(color: Color(0xFF236BF1), fontSize: 20),
-                      ),
-                      SizedBox(height: 8),
-                    ],
-                  );
+                  return const Center(child:Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 16, bottom: 8, left: 6, right: 6),
+                child: Text(
+                  'You have no items in the cart!',
+                  style: TextStyle(fontSize: 40),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ]
+                  ));
                 } else {
                   return Padding(
                       padding: const EdgeInsets.all(16.0),
@@ -161,6 +162,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                       ])));
                 }
               }
-            }));
+            }
+            ));
   }
 }

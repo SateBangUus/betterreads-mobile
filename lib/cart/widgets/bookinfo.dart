@@ -1,6 +1,5 @@
 import 'package:betterreads/cart/screens/checkout.dart';
 import 'package:flutter/material.dart';
-import 'package:betterreads/cart/models/buybook.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'dart:convert';
@@ -31,7 +30,6 @@ class CheckoutCard extends StatefulWidget {
 class _CheckoutCardState extends State<CheckoutCard> {
   late int _amount;
   late HomePageWidget checkoutPage;
-  TextEditingController _amountController = TextEditingController();
 
   @override
   void initState() {

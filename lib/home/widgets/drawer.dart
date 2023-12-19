@@ -1,3 +1,4 @@
+import 'package:betterreads/cart/screens/checkout.dart';
 import 'package:flutter/material.dart';
 import 'package:betterreads/home/screens/homepage.dart';
 import 'package:betterreads/auth/screens/login.dart';
@@ -79,7 +80,7 @@ class LeftDrawer extends StatelessWidget {
                 if (!request.loggedIn) {
                   navigateToPage(context, const LoginPage());
                 } else {
-                  navigateToPage(context, const Placeholder());
+                  navigateToPage(context, const HomePageWidget());
                 }
               }),
           ListTile(
