@@ -15,22 +15,21 @@ class CartWidget extends StatefulWidget {
 }
 
 class _CartWidgetState extends State<CartWidget> {
-Future<List<Product>> getProduct(CookieRequest request) async {
+  Future<List<Product>> getProduct(CookieRequest request) async {
     var response = await request.get(
-  'https://betterreads-k3-tk.pbp.cs.ui.ac.id/buy/get-product-flutter/',
-);
-      var data = jsonDecode(response.body);
+      'https://betterreads-k3-tk.pbp.cs.ui.ac.id/buy/get-product-flutter/',
+    );
 
-      List<Product> listBuy = [];
-      for (var d in data) {
-        if (d != null) {
-          Product product = Product.fromJson(d);
-          listBuy.add(product);
-        }
+    List<Product> listBuy = [];
+    for (var d in response) {
+      if (d != null) {
+        Product product = Product.fromJson(d);
+        listBuy.add(product);
       }
-
-      return listBuy;
-}
+    }
+    
+    return listBuy;
+  }
 
   void refreshC() {
     final request = context.watch<CookieRequest>();
@@ -44,7 +43,8 @@ Future<List<Product>> getProduct(CookieRequest request) async {
     final request = context.watch<CookieRequest>();
     return Scaffold(
         appBar: AppBar(
-              backgroundColor: const Color.fromARGB(255, 64, 64, 64),// Change to your desired color
+          backgroundColor: const Color.fromARGB(
+              255, 64, 64, 64), // Change to your desired color
           automaticallyImplyLeading: false,
           title: const Row(
             mainAxisSize: MainAxisSize.max,
@@ -76,29 +76,30 @@ Future<List<Product>> getProduct(CookieRequest request) async {
             future: getProduct(request),
             builder: (context, AsyncSnapshot snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-      return const Center(child: CircularProgressIndicator());
-    } else if (snapshot.hasError) {
-      return Center(child: Text('Error: ${snapshot.error}'));
-    } else if (!snapshot.hasData || snapshot.data == null) {
-      return const Center(
-        child: Text('No items in the cart!'),
-      );
-    } else {
-                 if (!snapshot.hasData) {
-                    return const Center(child:Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 16, bottom: 8, left: 6, right: 6),
-                  child: Text(
-                    'You have no items in the cart!',
-                    style: TextStyle(fontSize: 40),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ]
-                    ));
-                  } else {
+                return const Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return Center(child: Text('Error: ${snapshot.error}'));
+              } else if (!snapshot.hasData || snapshot.data == null) {
+                return const Center(
+                  child: Text('No items in the cart!'),
+                );
+              } else {
+                if (!snapshot.hasData) {
+                  return const Center(
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              top: 16, bottom: 8, left: 6, right: 6),
+                          child: Text(
+                            'You have no items in the cart!',
+                            style: TextStyle(fontSize: 40),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ]));
+                } else {
                   return Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: SingleChildScrollView(
@@ -112,12 +113,14 @@ Future<List<Product>> getProduct(CookieRequest request) async {
                             var cartItem = snapshot.data![index];
                             print("Cart Item $index: $cartItem");
                             return CheckoutCard(
-                            id: cartItem.id, // Assuming pk is the identifier for the book
-                            title: cartItem.title,
-                            author: cartItem.author,
-                            imageURL: cartItem.imageLink,
-                            amount: cartItem.amount, // Replace with the actual property
-                            refreshCheckout: refreshC,
+                              id: cartItem
+                                  .id, // Assuming pk is the identifier for the book
+                              title: cartItem.title,
+                              author: cartItem.author,
+                              imageURL: cartItem.imageLink,
+                              amount: cartItem
+                                  .amount, // Replace with the actual property
+                              refreshCheckout: refreshC,
                             );
                           },
                         ),
@@ -167,7 +170,6 @@ Future<List<Product>> getProduct(CookieRequest request) async {
                       ])));
                 }
               }
-            }
-            ));
+            }));
   }
 }
