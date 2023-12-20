@@ -102,8 +102,15 @@ Widget build(BuildContext context) {
           return SingleChildScrollView(
             child: Column(
               children: [
-                Image.network(snapshot.data!.imageLink),
-                Padding(
+              Container(
+                    height: 120.0,
+                    width: 90.0,
+                    decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage(book.),
+                      fit: BoxFit.cover,
+                    ),),
+                  ),                Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -122,34 +129,32 @@ Widget build(BuildContext context) {
                       const SizedBox(height: 8),
                       Text(snapshot.data!.description),
                       const SizedBox(height: 20),
-                      FutureBuilder<List<Review>>(
-                        future: _reviewsFuture,
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState == ConnectionState.waiting) {
-                            return const Center(child: CircularProgressIndicator());
-                          } else if (snapshot.hasError) {
-                            return Center(child: Text('Error: ${snapshot.error}'));
-                          } else if (snapshot.hasData) {
-                            List<Widget> reviewListTiles = [];
-                            for (Review review in snapshot.data!) {
-                              
-                              reviewListTiles.add(
-                                ListTile(
-                                  title: Text(review.user),
-                                  subtitle: Text(review.description),
-                                  trailing: Text('Rating: ${review.rating}'),
-                                )
+                        FutureBuilder<List<Review>>(
+                          future: _reviewsFuture,
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return const Center(child: CircularProgressIndicator());
+                            } else if (snapshot.hasError) {
+                              return Center(child: Text('Error: ${snapshot.error}'));
+                            } else if (snapshot.hasData) {
+                              return ListView.builder(
+                                shrinkWrap: true, // Allows ListView to be inside another scrollable widget
+                                physics: NeverScrollableScrollPhysics(), // Prevents ListView from scrolling independently
+                                itemCount: snapshot.data!.length,
+                                itemBuilder: (context, index) {
+                                  Review review = snapshot.data![index];
+                                  return ListTile(
+                                    title: Text(review.user),
+                                    subtitle: Text(review.description),
+                                    trailing: Text('Rating: ${review.rating}'),
+                                  );
+                                },
                               );
+                            } else {
+                              return const Text('No reviews available');
                             }
-
-                            return Column(
-                              children: reviewListTiles,
-                            );
-                          } else {
-                            return const Text('No reviews available');
-                          }
-                        },
-                      ),
+                          },
+                        ),
                     ],
                   ),
                 ),
