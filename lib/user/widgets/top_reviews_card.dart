@@ -29,12 +29,12 @@ class TopReviewsCard extends StatelessWidget {
               child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(userReview.book.title,
+              Text(userReview.book.fields.title,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                       fontSize: MediaQuery.sizeOf(context).width / 18,
                       fontWeight: FontWeight.bold)),
-              Text("by ${userReview.book.author}",
+              Text("by ${userReview.book.fields.author}",
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontSize: MediaQuery.sizeOf(context).width / 20,
