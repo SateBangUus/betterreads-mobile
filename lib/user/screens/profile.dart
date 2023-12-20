@@ -1,3 +1,5 @@
+import 'package:betterreads/home/widgets/drawer.dart';
+import 'package:betterreads/user/screens/edit_profile.dart';
 import 'package:betterreads/user/widgets/favorite_genre_card.dart';
 import 'package:betterreads/user/widgets/top_reviews_card.dart';
 import 'package:flutter/material.dart';
@@ -5,32 +7,13 @@ import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:betterreads/user/models/user.dart';
 
-class ProfileApp extends StatelessWidget {
-  const ProfileApp({super.key});
+class ProfilePage extends StatelessWidget {
+  final String username;
+  const ProfilePage({super.key, required this.username});
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Profile',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const ProfilePage(),
-    );
-  }
-}
-
-class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
-
-  @override
-  _ProfilePageState createState() => _ProfilePageState();
-}
-
-class _ProfilePageState extends State<ProfilePage> {
   Future<User> fetchUser(CookieRequest request) async {
     final response = await request
-        .get('https://betterreads-k3-tk.pbp.cs.ui.ac.id/api/user/');
+        .get('https://betterreads-k3-tk.pbp.cs.ui.ac.id/api/user/$username/');
     return User.fromJson(response);
   }
 
@@ -39,6 +22,11 @@ class _ProfilePageState extends State<ProfilePage> {
     final request = context.watch<CookieRequest>();
     return Scaffold(
         appBar: AppBar(title: const Text('Profile')),
+        drawer: request.loggedIn
+            ? (username == request.getJsonData()['username']
+                ? const LeftDrawer()
+                : null)
+            : null,
         body: SingleChildScrollView(
           child: FutureBuilder(
               future: fetchUser(request),
@@ -67,6 +55,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
                                         children: [
                                           Text(
                                             snapshot.data.username,
@@ -74,7 +66,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                 fontSize:
                                                     MediaQuery.sizeOf(context)
                                                             .width /
-                                                        10,
+                                                        12,
                                                 fontWeight: FontWeight.bold),
                                           ),
                                           const SizedBox(width: 5),
@@ -95,13 +87,28 @@ class _ProfilePageState extends State<ProfilePage> {
                                                     .width /
                                                 24),
                                       ),
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const EditProfilePage()));
+                                        },
+                                        child: Text('Edit Profile',
+                                            style: TextStyle(
+                                                fontSize:
+                                                    MediaQuery.sizeOf(context)
+                                                            .width /
+                                                        20)),
+                                      ),
                                     ],
                                   ),
                                 ],
                               ),
                             ],
                           ),
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 35),
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -216,7 +223,12 @@ class _ProfilePageState extends State<ProfilePage> {
                 } else if (snapshot.hasError) {
                   return Text('${snapshot.error}');
                 }
-                return const CircularProgressIndicator();
+                return SizedBox(
+                    height: MediaQuery.sizeOf(context).height,
+                    width: MediaQuery.sizeOf(context).width,
+                    child: const Center(
+                      child: CircularProgressIndicator(),
+                    ));
               }),
         ));
   }
