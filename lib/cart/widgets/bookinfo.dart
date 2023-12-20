@@ -11,6 +11,7 @@ class CheckoutCard extends StatefulWidget {
   final String imageURL;
   final int amount;
   final Function() refreshCheckout;
+  final Function() refreshdelete;
 
   const CheckoutCard({
     super.key,
@@ -20,6 +21,7 @@ class CheckoutCard extends StatefulWidget {
     required this.imageURL,
     required this.amount,
     required this.refreshCheckout,
+    required this.refreshdelete,
   });
 
   @override
@@ -29,6 +31,7 @@ class CheckoutCard extends StatefulWidget {
 
 class _CheckoutCardState extends State<CheckoutCard> {
   late int _amount;
+  final TextEditingController _amountController = TextEditingController();
   late CartWidget checkoutPage;
 
   @override
@@ -70,6 +73,7 @@ class _CheckoutCardState extends State<CheckoutCard> {
               width: 90.0,
               fit: BoxFit.cover,
             ),
+
             const SizedBox(width: 12.0),
             Expanded(
               child: Column(
@@ -92,7 +96,7 @@ class _CheckoutCardState extends State<CheckoutCard> {
                               jsonEncode(<String, int>{
                                 'id': widget.id,
                               }));
-
+                          widget.refreshdelete();
                           widget.refreshCheckout();
                         },
                       ),
@@ -106,10 +110,22 @@ class _CheckoutCardState extends State<CheckoutCard> {
                               jsonEncode(<String, int>{
                                 'id': widget.id,
                               }));
-
                           _decrement();
                         },
                       ),
+                      Expanded(
+                          child: TextField(
+                        controller: _amountController,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          hintText: _amount.toString(),
+                          hintStyle: const TextStyle(color: Colors.green),
+                        ),
+                        onSubmitted: (value) async {
+                          int newAmount = int.tryParse(value) ?? _amount;
+                          if (newAmount <= 0) {
+                            newAmount = _amount;
+                          }})),
 
                       IconButton(
                         icon: const Icon(Icons.add_circle),
@@ -122,15 +138,13 @@ class _CheckoutCardState extends State<CheckoutCard> {
 
                           _increment();
                         },
-                      ),
-                    ],
+                      )]
                   ),
-                ],
-              ),
-            ),
-          ],
+                ]
+                  ),
+            )
+          ]
         ),
-      ),
-    );
-  }
-}
+              ),
+        );
+  }}
