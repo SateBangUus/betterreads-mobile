@@ -69,11 +69,6 @@ class LeftDrawer extends StatelessWidget {
             onTap: () => navigateToPage(context, const HomePage()),
           ),
           ListTile(
-            title: const Text('Search Books'),
-            leading: const Icon(Icons.search),
-            onTap: () => navigateToPage(context, const Placeholder()),
-          ),
-          ListTile(
               title: const Text('Cart'),
               leading: const Icon(Icons.shopping_cart),
               onTap: () {

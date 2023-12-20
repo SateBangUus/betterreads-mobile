@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:betterreads/home/widgets/drawer.dart';
 import 'package:provider/provider.dart';
@@ -13,9 +12,36 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final TextEditingController _searchController = TextEditingController();
+  TextEditingController _searchController = TextEditingController();
   List<Book> _books = [];
 
+  Future<void> _showBooks(request) async {
+    final response = await request.get(
+      'http://127.0.0.1:8000/show-books-flutter');
+
+    setState(() {
+      _books.clear();
+      for (var bookData in response) {
+        final book = Book.fromJson(bookData);
+        _books.add(book);
+      }
+    });
+  }
+
+  Future<void> _searchBooks(request, query) async {
+    final response = await request.get(
+      'http://127.0.0.1:8000/search-book-flutter/?search_term=$query');
+
+    setState(() {
+      _books.clear();
+      for (var bookData in response) {
+        final book = Book.fromJson(bookData);
+        _books.add(book);
+      }
+    });
+  }
+
+  
   @override
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
@@ -90,6 +116,19 @@ class _HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.all(8.0),
                 child: TextField(
                   controller: _searchController,
+                  onChanged: (String value) async {
+                    if (value.isEmpty) {
+                      setState(() {
+                         _showBooks(request);
+                      });
+                    } else {
+                      try {
+                        await _searchBooks(request, value);
+                      } catch (error) {
+                        print("error");
+                      }
+                    }
+                  },
                   decoration: InputDecoration(
                     labelText: 'Search Books',
                     suffixIcon: IconButton(
@@ -102,14 +141,32 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               _books.isNotEmpty
-                  ? Expanded(
-                      child: ListView.builder(
+                  ? Container(
+                      height: MediaQuery.of(context).size.height - 300,
+                      child: ListView.separated(
+                        separatorBuilder: (context, index) => Divider(),
                         itemCount: _books.length,
                         itemBuilder: (context, index) {
-                          return Card(
-                            child: ListTile(
-                              title: Text(_books[index].title),
-                              subtitle: Text(_books[index].author),
+                          return GestureDetector(
+                            onTap: () {
+                              // // Navigate to the new page here
+                              // Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute(
+                              //     builder: (context) => BookDetailsPage(book: _books[index]),
+                              //   ),
+                              // );
+                            },
+                            child: Card(
+                              child: ListTile(
+                                leading: Image.network(_books[index].fields.imageLink,
+                                  width: 50,
+                                  height: 50,
+                                ),
+                                title: Text(_books[index].fields.title),
+                                subtitle: Text(_books[index].fields.author),
+                                
+                              ),
                             ),
                           );
                         },
@@ -121,32 +178,5 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
-  }
-
-  Future<void> _searchBooks(request, query) async {
-    final response = await request.get(
-      request.get('http://127.0.0.1:8000/search-book-flutter/'));
-
-    if (response.statusCode == 200) {
-      final List<dynamic> data = json.decode(response.body);
-
-      setState(() {
-        _books.clear();
-        for (var bookData in data) {
-          final book = Book(
-            title:        bookData['fields']['title'],
-            author:       bookData['fields']['author'],
-            publisher:    bookData['fields']['publisher'], 
-            description:  bookData['fields']['description'], 
-            genre:        bookData['fields']['genre'], 
-            imageLink:    bookData['fields']['image_link'], 
-            id:           bookData['pk'] 
-          );
-          _books.add(book);
-        }
-      });
-    } else {
-      throw Exception('Failed to load books');
-    }
   }
 }
