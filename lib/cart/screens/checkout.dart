@@ -44,7 +44,6 @@ class _CartWidgetState extends State<CartWidget> {
         appBar: AppBar(
           backgroundColor: const Color.fromARGB(
               255, 64, 64, 64), // Change to your desired color
-          automaticallyImplyLeading: false,
           title: const Row(
             mainAxisSize: MainAxisSize.max,
             children: [
@@ -70,7 +69,6 @@ class _CartWidgetState extends State<CartWidget> {
           centerTitle: false,
           elevation: 2,
         ),
-        drawer: const LeftDrawer(),
         body: FutureBuilder(
             future: getProduct(request),
             builder: (context, AsyncSnapshot snapshot) {
