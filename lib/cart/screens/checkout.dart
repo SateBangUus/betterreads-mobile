@@ -1,5 +1,6 @@
+import 'dart:convert';
+
 import 'package:betterreads/cart/screens/success.dart';
-import 'package:betterreads/home/widgets/drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:betterreads/cart/models/buybook.dart';
 import 'package:betterreads/cart/widgets/bookinfo.dart';
@@ -37,6 +38,12 @@ class _CartWidgetState extends State<CartWidget> {
     });
   }
 
+void refreshdel() {
+    setState(() {
+      Navigator.pop(context);
+      Navigator.pushReplacement(context ,MaterialPageRoute(builder: (context) => CartWidget()));
+    });
+  }
   @override
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
@@ -109,14 +116,13 @@ class _CartWidgetState extends State<CartWidget> {
                           itemBuilder: (context, index) {
                             var cartItem = snapshot.data![index];
                             return CheckoutCard(
-                              id: cartItem
-                                  .id, // Assuming pk is the identifier for the book
+                              id: cartItem.id, // Assuming pk is the identifier for the book
                               title: cartItem.title,
                               author: cartItem.author,
                               imageURL: cartItem.imageLink,
-                              amount: cartItem
-                                  .amount, // Replace with the actual property
+                              amount: cartItem.amount, // Replace with the actual property
                               refreshCheckout: refreshC,
+                              refreshdelete: refreshdel,
                             );
                           },
                         ),
@@ -131,14 +137,19 @@ class _CartWidgetState extends State<CartWidget> {
                               children: [
                                 Expanded(
                                   child: ElevatedButton(
-                                    onPressed: () {
+                                    onPressed: () async {
                                       Navigator.pushReplacement(
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
                                               CheckoutWidget(),
                                         ),
+                                          
                                       );
+                                      await request.postJson(
+                              "https://betterreads-k3-tk.pbp.cs.ui.ac.id/buy/submit-buy/", jsonEncode(<String, int>{})
+                              );
+                              refreshC();
                                       // Navigate back to the main page or perform other actions
                                     },
                                     style: ElevatedButton.styleFrom(
