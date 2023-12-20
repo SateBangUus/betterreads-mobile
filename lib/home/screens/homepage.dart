@@ -1,3 +1,4 @@
+import 'package:betterreads/book/screens/desc.dart';
 import 'package:flutter/material.dart';
 import 'package:betterreads/home/widgets/drawer.dart';
 import 'package:provider/provider.dart';
@@ -149,13 +150,13 @@ class _HomePageState extends State<HomePage> {
                         itemBuilder: (context, index) {
                           return GestureDetector(
                             onTap: () {
-                              // // Navigate to the new page here
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //     builder: (context) => BookDetailsPage(book: _books[index]),
-                              //   ),
-                              // );
+                              // Navigate to the new page here
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => BookDetailPage(bookId: _books[index].pk),
+                                ),
+                              );
                             },
                             child: Card(
                               child: ListTile(
