@@ -67,15 +67,13 @@ class _CheckoutCardState extends State<CheckoutCard> {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-      height: 120.0,
-      width: 90.0,
-       decoration: BoxDecoration(
-      image: DecorationImage(
-        image: NetworkImage(widget.imageURL, /*headers: {""}*/),
-        fit: BoxFit.fitHeight,
-      ),),
-    ),
+            Image.network(
+              widget.imageURL,
+              height: 120.0,
+              width: 90.0,
+              fit: BoxFit.cover,
+            ),
+
             const SizedBox(width: 12.0),
             Expanded(
               child: Column(
