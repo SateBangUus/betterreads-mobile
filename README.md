@@ -1,4 +1,7 @@
-# [BetterReads Mobile]()
+# [BetterReads Mobile](https://install.appcenter.ms/orgs/satebanguus/apps/betterreads/distribution_groups/public)
+[![Build status](https://build.appcenter.ms/v0.1/apps/264efc57-f1aa-467e-8bb9-e21d93332c37/branches/main/badge)](https://appcenter.ms)
+
+[APK Download](https://install.appcenter.ms/orgs/satebanguus/apps/betterreads/distribution_groups/public)
 ## Development Environment
 
 ```bash
