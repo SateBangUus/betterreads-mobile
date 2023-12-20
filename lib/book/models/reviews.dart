@@ -13,7 +13,7 @@ List<Review> reviewsFromJson(String str) {
 
 class Review {
   int reviewId;
-  String user; // Assuming you want to include basic user info
+  String user; // Assuming this is a String
   String description;
   double rating;
   bool isCurator;
@@ -26,19 +26,23 @@ class Review {
     required this.isCurator,
   });
 
-  factory Review.fromJson(Map<String, dynamic> json) => Review(
-        reviewId: json["id"],
-        user: json["user"],
-        description: json["description"],
-        rating: json["rating"].toDouble(),
-        isCurator: json.containsKey("is_curator") ? json["is_curator"] : false,
-      );
+  factory Review.fromJson(Map<String, dynamic> json) {
+    return Review(
+      reviewId: json["id"] ?? 0, // Provide a default value in case of null
+      user: json["user"] ?? '', // Default value for String
+      description: json["description"] ?? '',
+      rating: (json["rating"] ?? 0.0).toDouble(), // Handle potential null for double
+      isCurator: json.containsKey("is_curator") ? json["is_curator"] : false,
+    );
+  }
 
-  Map<String, dynamic> toJson() => {
-        "id": reviewId,
-        "user": user,
-        "description": description,
-        "rating": rating,
-        "is_curator": isCurator,
-      };
+  Map<String, dynamic> toJson() {
+    return {
+      "id": reviewId,
+      "user": user,
+      "description": description,
+      "rating": rating,
+      "is_curator": isCurator,
+    };
+  }
 }
