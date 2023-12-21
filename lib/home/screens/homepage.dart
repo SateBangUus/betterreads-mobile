@@ -1,3 +1,4 @@
+import 'package:betterreads/book/screens/desc.dart';
 import 'package:flutter/material.dart';
 import 'package:betterreads/home/widgets/drawer.dart';
 import 'package:provider/provider.dart';
@@ -17,7 +18,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _showBooks(request) async {
     final response = await request.get(
-      'http://127.0.0.1:8000/show-books-flutter');
+      'https://betterreads-k3-tk.pbp.cs.ui.ac.id/show-books-flutter');
 
     setState(() {
       _books.clear();
@@ -30,7 +31,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _searchBooks(request, query) async {
     final response = await request.get(
-      'http://127.0.0.1:8000/search-book-flutter/?search_term=$query');
+      'https://betterreads-k3-tk.pbp.cs.ui.ac.id/search-book-flutter/?search_term=$query');
 
     setState(() {
       _books.clear();
@@ -125,7 +126,7 @@ class _HomePageState extends State<HomePage> {
                       try {
                         await _searchBooks(request, value);
                       } catch (error) {
-                        print("error");
+                        print("Nothing found");
                       }
                     }
                   },
@@ -149,13 +150,13 @@ class _HomePageState extends State<HomePage> {
                         itemBuilder: (context, index) {
                           return GestureDetector(
                             onTap: () {
-                              // // Navigate to the new page here
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //     builder: (context) => BookDetailsPage(book: _books[index]),
-                              //   ),
-                              // );
+                              // Navigate to the new page here
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => BookDetailPage(bookId: _books[index].pk),
+                                ),
+                              );
                             },
                             child: Card(
                               child: ListTile(

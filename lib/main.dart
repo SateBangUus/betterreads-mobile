@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
           title: 'BetterReads',
           theme: ThemeData.dark(),
-          home: const BookDetailPage(bookId: 8), // Replace 1 with an actual book ID
+          home: const HomePage(), // Replace 1 with an actual book ID
       ),
     );
   }
